@@ -5,6 +5,27 @@ module.exports = {
     author: `@gatsbyjs`,
   },
   plugins: [
+    {
+      resolve: "@prismicio/gatsby-source-prismic-graphql",
+      options: {
+        repositoryName: "previews",
+        previews: true,
+        defaultLang: "en-gb",
+        langs: ["en-gb", "de-de"],
+        pages: [
+          {
+            type: "Homepage",
+            match: "/:lang",
+            component: require.resolve("./src/templates/index.js"),
+          },
+          {
+            type: "Page_2",
+            match: "/:lang/page-2",
+            component: require.resolve("./src/templates/page-2.js"),
+          },
+        ],
+      },
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,

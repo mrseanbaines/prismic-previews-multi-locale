@@ -1,42 +1,73 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
+import { Link, StaticQuery, graphql } from "gatsby"
 import React from "react"
+import { withPreview } from "@prismicio/gatsby-source-prismic-graphql"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
+import { useLocale } from "../context"
+import { localeToCountryCode } from "../utils/localeToCountryCode"
+
+const Header = ({ data }) => {
+  return (
+    <header
       style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
+        background: `rebeccapurple`,
+        marginBottom: `1.45rem`,
       }}
     >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
+      <div
+        style={{
+          margin: `0 auto`,
+          maxWidth: 960,
+          padding: `1.45rem 1.0875rem`,
+        }}
+      >
+        <h1 style={{ margin: 0 }}>
+          <Link
+            to={`/${localeToCountryCode(data._meta.lang)}`}
+            style={{
+              color: `white`,
+              textDecoration: `none`,
+            }}
+          >
+            {data.title}
+          </Link>
+        </h1>
+      </div>
+    </header>
+  )
 }
 
-Header.defaultProps = {
-  siteTitle: ``,
+const Container = () => {
+  const locale = useLocale()
+
+  return (
+    <StaticQuery
+      query={`${query}`}
+      render={withPreview(({ prismic }) => {
+        const data = prismic.allHeaders.edges.find(
+          edge => edge.node._meta.lang === locale
+        ).node
+
+        return <Header data={data} />
+      }, query)}
+    />
+  )
 }
 
-export default Header
+const query = graphql`
+  {
+    prismic {
+      allHeaders {
+        edges {
+          node {
+            _meta {
+              lang
+            }
+            title
+          }
+        }
+      }
+    }
+  }
+`
+
+export default Container

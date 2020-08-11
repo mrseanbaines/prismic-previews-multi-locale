@@ -1,7 +1,17 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+const React = require("react")
+const {
+  registerLinkResolver,
+} = require("@prismicio/gatsby-source-prismic-graphql")
 
-// You can delete this file if you're not using it
+const { linkResolver } = require("./src/utils/linkResolver")
+const { LocaleContext } = require("./src/context")
+
+registerLinkResolver(linkResolver)
+
+exports.wrapPageElement = ({ element, props }) => {
+  return (
+    <LocaleContext.Provider value={props.pageContext.lang}>
+      {element}
+    </LocaleContext.Provider>
+  )
+}
