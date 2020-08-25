@@ -11,7 +11,14 @@ const Post = props => {
   const prismicContent = props.data.prismic.allPosts.edges[0]
 
   if (!prismicContent) {
-    return <h1>No Prismic Content! 😱</h1>
+    return (
+      <h1>
+        No Prismic Content!{" "}
+        <span role="img" aria-label="">
+          😱
+        </span>
+      </h1>
+    )
   }
 
   const data = prismicContent.node
