@@ -23,6 +23,11 @@ module.exports = {
             match: "/:lang/page-2",
             component: require.resolve("./src/templates/page-2.js"),
           },
+          {
+            type: "Post",
+            match: "/:lang/posts/:uid",
+            component: require.resolve("./src/templates/post.js"),
+          },
         ],
       },
     },

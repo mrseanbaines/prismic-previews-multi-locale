@@ -20,6 +20,8 @@ exports.onCreatePage = ({ page, actions }) => {
       ...oldPage.context,
       prismicAllPagePaths: oldPage.context.prismicAllPagePaths.map(path =>
         removeTrailingSlash(
+          // Replace loacle code in /preview page context paths so Prismic can redirect to the right page
+          // e.g. `/en-gb/foo` → `/gb/foo`
           path.replace(
             /^\/([a-z]{2}-[a-z]{2})(?:\/|$)/,
             (match, p1) => `/${localeToCountryCode(p1)}/`
