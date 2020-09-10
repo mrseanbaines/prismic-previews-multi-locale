@@ -1,27 +1,31 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
-import { localeToCountryCode } from "../utils/localeToCountryCode"
 
 const IndexPage = props => {
   const data = props.data.prismic.allHomepages.edges[0].node
 
   return (
     <Layout>
-      <SEO title="Home" />
-      <h1>{data.title}</h1>
-      <p>Welcome to your new Gatsby site.</p>
-      <p>Now go build something great.</p>
-      <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-        <Image />
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+        <figure>
+          <img
+            src={`${data.image.url}&w=100&dpr=2`}
+            alt="SVG image alt text"
+            style={{ width: 100, height: 100, margin: 0 }}
+          />
+          <figcaption>An SVG image ☝️</figcaption>
+        </figure>
+        <figure>
+          <img
+            src={`${data.image_2.url}&w=100&dpr=2`}
+            alt="A PNG image alt text"
+            style={{ width: 100, height: 100, margin: 0 }}
+          />
+          <figcaption>PNG image ☝️</figcaption>
+        </figure>
       </div>
-      <Link to={`/${localeToCountryCode(data._meta.lang)}/page-2`}>
-        Go to page 2
-      </Link>{" "}
-      <br />
     </Layout>
   )
 }
@@ -36,6 +40,8 @@ export const query = graphql`
               lang
             }
             title
+            image
+            image_2
           }
         }
       }
